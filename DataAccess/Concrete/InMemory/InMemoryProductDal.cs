@@ -47,5 +47,10 @@ namespace DataAccess.Concrete.InMemory
                 productToUpdate.UnitsInStock = product.UnitsInStock;
             }
         }
+
+        public List<Product> GetProductsByCategory(int categoryId)
+        {
+            return _products.Where(x => x.CategoryId == categoryId).ToList();
+        }
     }
 }
