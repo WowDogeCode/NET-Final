@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.InMemory
 {
@@ -51,6 +52,16 @@ namespace DataAccess.Concrete.InMemory
         public List<Product> GetProductsByCategory(int categoryId)
         {
             return _products.Where(x => x.CategoryId == categoryId).ToList();
+        }
+
+        public List<Product> GetAll(Expression<Func<Product, bool>>? filter = null)
+        {
+            return _products; //TODO: Add filter
+        }
+
+        public Product Get(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
