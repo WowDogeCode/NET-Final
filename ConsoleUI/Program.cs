@@ -15,7 +15,19 @@ class Program()
 
         //EfTest
         ProductManager productManager2 = new ProductManager(new EfProductDal());
-        foreach(var product in productManager2.GetAllProducts())
+        foreach (var product in productManager2.GetAllProducts())
+        {
+            Console.WriteLine(product.ProductName);
+        }
+
+        //Ef GetByCategoryId test
+        foreach (var product in productManager2.GetByCategoryId(2))
+        {
+            Console.WriteLine(product.ProductName);
+        }
+
+        //Ef GetByUnitPriceRange test
+        foreach (var product in productManager2.GetByUnitPriceRange(40, 100))
         {
             Console.WriteLine(product.ProductName);
         }
