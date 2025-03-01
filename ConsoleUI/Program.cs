@@ -12,6 +12,7 @@ class Program()
         EfProductGetByUnitPriceRange(40, 100);
         EfOrderGetAllOrdersTest();
         EfProductGetProductDetailsTest();
+        EfProductGetByIdTest(5);
     }
 
     private static void InMemoryProductTest()
@@ -72,5 +73,12 @@ class Program()
         {
             Console.WriteLine(productDetail.ProductName + " Category name: " + productDetail.CategoryName);
         }
+    }
+
+    private static void EfProductGetByIdTest(int productId)
+    {
+        ProductManager productManager = new ProductManager(new EfProductDal());
+
+        Console.WriteLine(productManager.GetById(productId).ProductName);
     }
 }
