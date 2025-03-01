@@ -32,5 +32,10 @@ namespace Business.Concrete
         {
             return _productDal.GetProductDetails();
         }
+
+        public Product GetById(int productId)
+        {
+            return _productDal.Get(x => x.ProductId == productId);
+        }
     }
 }
