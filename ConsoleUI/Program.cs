@@ -19,7 +19,7 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new InMemoryProductDal());
 
-        foreach (var product in productManager.GetAllProducts())
+        foreach (var product in productManager.GetAllProducts().Data)
         {
             Console.WriteLine(product.ProductName);
         }
@@ -29,7 +29,7 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetAllProducts())
+        foreach (var product in productManager.GetAllProducts().Data)
         {
             Console.WriteLine(product.ProductName);
         }
@@ -39,7 +39,7 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetByCategoryId(categoryId))
+        foreach (var product in productManager.GetByCategoryId(categoryId).Data)
         {
             Console.WriteLine(product.ProductName);
         }
@@ -49,7 +49,7 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetByUnitPriceRange(min, max))
+        foreach (var product in productManager.GetByUnitPriceRange(min, max).Data)
         {
             Console.WriteLine(product.ProductName);
         }
@@ -69,7 +69,7 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var productDetail in productManager.GetProductDetails())
+        foreach (var productDetail in productManager.GetProductDetails().Data)
         {
             Console.WriteLine(productDetail.ProductName + " Category name: " + productDetail.CategoryName);
         }
@@ -79,6 +79,6 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        Console.WriteLine(productManager.GetById(productId).ProductName);
+        Console.WriteLine(productManager.GetById(productId).Data.ProductName);
     }
 }

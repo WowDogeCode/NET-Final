@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -13,29 +15,41 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public List<Product> GetAllProducts()
+        public IDataResult<List<Product>> GetAllProducts()
         {
-            return _productDal.GetAll();
+            return new DataResult<List<Product>>(_productDal.GetAll(), true);
         }
 
-        public List<Product> GetByUnitPriceRange(decimal min, decimal max)
+        public IDataResult<List<Product>> GetByUnitPriceRange(decimal min, decimal max)
         {
-            return _productDal.GetAll(x => x.UnitPrice >= min && x.UnitPrice <= max);
+            return new DataResult<List<Product>>(_productDal.GetAll(x => x.UnitPrice >= min && x.UnitPrice <= max), true);
         }
 
-        public List<Product> GetByCategoryId(int categoryId)
+        public IDataResult<List<Product>> GetByCategoryId(int categoryId)
         {
-            return _productDal.GetAll(x => x.CategoryId == categoryId);
+            return new DataResult<List<Product>>(_productDal.GetAll(x => x.CategoryId == categoryId), true);
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return _productDal.GetProductDetails();
+            return new DataResult<List<ProductDetailDto>>(_productDal.GetProductDetails(), true);
         }
 
-        public Product GetById(int productId)
+        public IDataResult<Product> GetById(int productId)
         {
-            return _productDal.Get(x => x.ProductId == productId);
+            return new DataResult<Product>(_productDal.Get(x => x.ProductId == productId), true);
+        }
+
+        public IResult AddProduct(Product product)
+        {
+            if (product.ProductName.Length < 2)
+            {
+                return new ErrorResult(Messages.ProductNameInvalid);
+            }
+
+            _productDal.Add(product);
+
+            return new SuccessfulResult(Messages.ProductAdded);
         }
     }
 }
