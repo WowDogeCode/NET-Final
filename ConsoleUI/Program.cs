@@ -29,9 +29,18 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetAllProducts().Data)
+        var result = productManager.GetAllProducts();
+
+        if (result.IsSuccess)
         {
-            Console.WriteLine(product.ProductName);
+            foreach (var product in result.Data)
+            {
+                Console.WriteLine(product.ProductName);
+            }
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
         }
     }
 
@@ -39,9 +48,18 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetByCategoryId(categoryId).Data)
+        var result = productManager.GetByCategoryId(categoryId);
+
+        if (result.IsSuccess)
         {
-            Console.WriteLine(product.ProductName);
+            foreach (var product in result.Data)
+            {
+                Console.WriteLine(product.ProductName);
+            }
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
         }
     }
 
@@ -49,9 +67,18 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetByUnitPriceRange(min, max).Data)
+        var result = productManager.GetByUnitPriceRange(min, max);
+
+        if (result.IsSuccess)
         {
-            Console.WriteLine(product.ProductName);
+            foreach (var product in result.Data)
+            {
+                Console.WriteLine(product.ProductName);
+            }
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
         }
     }
 
@@ -69,9 +96,18 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var productDetail in productManager.GetProductDetails().Data)
+        var result = productManager.GetProductDetails();
+
+        if (result.IsSuccess)
         {
-            Console.WriteLine(productDetail.ProductName + " Category name: " + productDetail.CategoryName);
+            foreach (var productDetail in result.Data)
+            {
+                Console.WriteLine(productDetail.ProductName + " Category name: " + productDetail.CategoryName);
+            }
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
         }
     }
 
@@ -79,6 +115,15 @@ class Program()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        Console.WriteLine(productManager.GetById(productId).Data.ProductName);
+        var result = productManager.GetById(productId);
+
+        if (result.IsSuccess)
+        {
+            Console.WriteLine(result.Data.ProductName);
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
+        }
     }
 }
