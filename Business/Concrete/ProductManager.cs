@@ -2,11 +2,10 @@
 using Business.Constants;
 using Business.ValidationRules;
 using Core.CrossCuttingConcerns.Validation;
-using Core.Utilities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using FluentValidation;
 
 namespace Business.Concrete
 {
