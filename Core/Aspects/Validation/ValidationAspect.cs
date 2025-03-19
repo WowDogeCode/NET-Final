@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Messages;
 using FluentValidation;
 
 namespace Core.Aspects.Validation
@@ -12,7 +13,7 @@ namespace Core.Aspects.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new Exception("Wrong reference type"); //TODO: Standard error message.
+                throw new Exception(AspectMessages.WrongValidatorType);
             }
             _validator = validatorType;
         }
@@ -20,7 +21,7 @@ namespace Core.Aspects.Validation
         {
             IValidator? validator = Activator.CreateInstance(_validator) as IValidator;
 
-            if(validator != null)
+            if (validator != null)
             {
                 var itemType = _validator?.BaseType?.GetGenericArguments()[0];
                 var items = invocation.Arguments.Where(x => x.GetType() == itemType);
