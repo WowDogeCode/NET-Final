@@ -51,8 +51,33 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult AddProduct(Product product)
         {
-            _productDal.Add(product);
-            return new SuccessfulResult(Messages.ProductAdded);
+            if (IsProductCanBeAddedForCategory(product.CategoryId))
+            {
+                _productDal.Add(product);
+                return new SuccessfulResult(Messages.ProductAdded);
+            }
+
+            return new ErrorResult(Messages.ProductCountExceedForCategory);
+        }
+
+        [ValidationAspect(typeof(ProductValidator))]
+        public IResult UpdateProduct(Product product)
+        {
+            Product productToUpdate = _productDal.Get(x => x.ProductId == product.ProductId);
+
+            if(productToUpdate == null)
+            {
+                return new ErrorResult("Product not found");
+            }
+            
+            _productDal.Update(product);
+
+            return new SuccessfulResult("Product has been updated");
+        }
+
+        private bool IsProductCanBeAddedForCategory(int categoryId)
+        {
+            return _productDal.GetAll(x => x.CategoryId == categoryId).Count <= 10;
         }
     }
 }
