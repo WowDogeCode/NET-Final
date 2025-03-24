@@ -17,7 +17,7 @@ class Program()
 
     private static void InMemoryProductTest()
     {
-        ProductManager productManager = new ProductManager(new InMemoryProductDal());
+        ProductManager productManager = new ProductManager(new InMemoryProductDal(), new CategoryManager(new EfCategoryDal()));
 
         foreach (var product in productManager.GetAllProducts().Data)
         {
@@ -27,7 +27,7 @@ class Program()
 
     private static void EfProductGetAllProductsTest()
     {
-        ProductManager productManager = new ProductManager(new EfProductDal());
+        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
         var result = productManager.GetAllProducts();
 
@@ -46,7 +46,7 @@ class Program()
 
     private static void EfProductGetAllByCategoryId(int categoryId)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal());
+        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
         var result = productManager.GetByCategoryId(categoryId);
 
@@ -65,7 +65,7 @@ class Program()
 
     private static void EfProductGetByUnitPriceRange(int min, int max)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal());
+        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
         var result = productManager.GetByUnitPriceRange(min, max);
 
@@ -94,7 +94,7 @@ class Program()
 
     private static void EfProductGetProductDetailsTest()
     {
-        ProductManager productManager = new ProductManager(new EfProductDal());
+        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
         var result = productManager.GetProductDetails();
 
@@ -113,7 +113,7 @@ class Program()
 
     private static void EfProductGetByIdTest(int productId)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal());
+        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
         var result = productManager.GetById(productId);
 
