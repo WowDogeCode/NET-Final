@@ -13,6 +13,7 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
+
         public IResult AddUser(User user)
         {
             _userDal.Add(user);
@@ -22,7 +23,14 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByEmail(string email)
         {
-            return new SuccessfulDataResult<User>(_userDal.Get(x => x.Email == email));
+            User user = _userDal.Get(x => x.Email == email);
+
+            if (user is null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+
+            return new SuccessfulDataResult<User>(user);
         }
 
         public IDataResult<List<OperationClaim>> GetOperationClaims(User user)

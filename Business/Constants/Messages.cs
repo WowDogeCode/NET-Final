@@ -12,5 +12,7 @@
         public static string ProductNotFound = "Product is not found";
         public static string NotAuthorized = "User not authorized";
         public static string UserAdded = "User has been added";
+        public static string UserNotFound = "User not found";
+        public static string PasswordNotVerified = "Password is not verified";
     }
 }
