@@ -10,5 +10,7 @@
         public static string CategoryCountExceeds = "Category count exceeds 15";
         public static string ProductUpdated = "Product has been updated";
         public static string ProductNotFound = "Product is not found";
+        public static string NotAuthorized = "User not authorized";
+        public static string UserAdded = "User has been added";
     }
 }
