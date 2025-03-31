@@ -14,5 +14,6 @@
         public static string UserAdded = "User has been added";
         public static string UserNotFound = "User not found";
         public static string PasswordNotVerified = "Password is not verified";
+        public static string EmailAlreadyInUse = "Email is already in use";
     }
 }
