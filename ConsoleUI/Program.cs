@@ -1,11 +1,23 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
+using Microsoft.Extensions.Configuration;
 
 class Program()
 {
+    static NorthwindContext? context;
     static void Main(string[] args)
     {
+        var configBuilder = new ConfigurationBuilder();
+        configBuilder.AddInMemoryCollection(new[]
+        {
+            new KeyValuePair<string, string?>("ConnectionStrings:Northwind", "Server=localhost;Database=Northwind;Trusted_Connection=True;")
+        });
+
+        IConfiguration configuration = configBuilder.Build();
+
+        context = new NorthwindContext(configuration);
+
         InMemoryProductTest();
         EfProductGetAllProductsTest();
         EfProductGetAllByCategoryId(2);
@@ -17,7 +29,7 @@ class Program()
 
     private static void InMemoryProductTest()
     {
-        ProductManager productManager = new ProductManager(new InMemoryProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new InMemoryProductDal(), new CategoryManager(new EfCategoryDal(context)));
 
         foreach (var product in productManager.GetAllProducts().Data)
         {
@@ -27,7 +39,7 @@ class Program()
 
     private static void EfProductGetAllProductsTest()
     {
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new EfProductDal(context), new CategoryManager(new EfCategoryDal(context)));
 
         var result = productManager.GetAllProducts();
 
@@ -46,7 +58,7 @@ class Program()
 
     private static void EfProductGetAllByCategoryId(int categoryId)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new EfProductDal(context), new CategoryManager(new EfCategoryDal(context)));
 
         var result = productManager.GetByCategoryId(categoryId);
 
@@ -65,7 +77,7 @@ class Program()
 
     private static void EfProductGetByUnitPriceRange(int min, int max)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new EfProductDal(context), new CategoryManager(new EfCategoryDal(context)));
 
         var result = productManager.GetByUnitPriceRange(min, max);
 
@@ -84,7 +96,7 @@ class Program()
 
     private static void EfOrderGetAllOrdersTest()
     {
-        OrderManager orderManager = new OrderManager(new EfOrderDal());
+        OrderManager orderManager = new OrderManager(new EfOrderDal(context));
 
         foreach (var order in orderManager.GetAllOrders())
         {
@@ -94,7 +106,7 @@ class Program()
 
     private static void EfProductGetProductDetailsTest()
     {
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new EfProductDal(context), new CategoryManager(new EfCategoryDal(context)));
 
         var result = productManager.GetProductDetails();
 
@@ -113,7 +125,7 @@ class Program()
 
     private static void EfProductGetByIdTest(int productId)
     {
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        ProductManager productManager = new ProductManager(new EfProductDal(context), new CategoryManager(new EfCategoryDal(context)));
 
         var result = productManager.GetById(productId);
 
