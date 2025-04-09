@@ -14,25 +14,51 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
-            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+            // DALs
+            builder.RegisterType<EfProductDal>()
+                   .As<IProductDal>()
+                   .InstancePerLifetimeScope();
 
-            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
-            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
+            builder.RegisterType<EfCategoryDal>()
+                   .As<ICategoryDal>()
+                   .InstancePerLifetimeScope();
 
-            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
-            builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+            builder.RegisterType<EfUserDal>()
+                   .As<IUserDal>()
+                   .InstancePerLifetimeScope();
 
-            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+            // Managers
+            builder.RegisterType<ProductManager>()
+                   .As<IProductService>()
+                   .InstancePerLifetimeScope();
 
+            builder.RegisterType<CategoryManager>()
+                   .As<ICategoryService>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<UserManager>()
+                   .As<IUserService>()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterType<AuthManager>()
+                   .As<IAuthService>()
+                   .InstancePerLifetimeScope();
+
+            // JWT
+            builder.RegisterType<JwtHelper>()
+                   .As<ITokenHelper>()
+                   .SingleInstance();
+
+            // Interceptors
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
-            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
-                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
-                {
-                    Selector = new AspectInterceptorSelector()
-                }).SingleInstance();
+            builder.RegisterAssemblyTypes(assembly)
+                   .AsImplementedInterfaces()
+                   .EnableInterfaceInterceptors(new ProxyGenerationOptions
+                   {
+                       Selector = new AspectInterceptorSelector()
+                   })
+                   .InstancePerLifetimeScope();
         }
     }
 }
