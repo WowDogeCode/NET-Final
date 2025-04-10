@@ -1,0 +1,27 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_PID=Express
+    volumes:
+      - sqlvolume:/var/opt/mssql
+
+  webapi:
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__NorthwindDB=Server=sqlserver;Database=Northwind;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True;;
+
+volumes:
+  sqlvolume:
