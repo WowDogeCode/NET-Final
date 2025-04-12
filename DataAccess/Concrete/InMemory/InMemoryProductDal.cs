@@ -69,5 +69,10 @@ namespace DataAccess.Concrete.InMemory
         {
             throw new NotImplementedException(); //TODO: Implement
         }
+
+        public Product GetAsNoTracking(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
