@@ -1,11 +1,16 @@
 ﻿using Business.Concrete;
+using Core.CrossCuttingConcerns.Caching;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
+using Entities.Concrete;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 class Program()
 {
     static NorthwindContext? context;
+    static ICacheService? cacheService;
     static void Main(string[] args)
     {
         var configBuilder = new ConfigurationBuilder();
@@ -18,6 +23,8 @@ class Program()
 
         context = new NorthwindContext(configuration);
 
+        cacheService = new InMemoryCacheService(new MemoryCache(new MemoryCacheOptions()));
+
         InMemoryProductTest();
         EfProductGetAllProductsTest();
         EfProductGetAllByCategoryId(2);
@@ -29,12 +36,29 @@ class Program()
 
     private static void InMemoryProductTest()
     {
+        string cacheKey = "getAllProducts";
+        var data = cacheService?.Get<List<Product>>(cacheKey);
+
+        if (data != null)
+        {
+            foreach (var product in data)
+            {
+                Console.WriteLine(product.ProductName);
+            }
+
+            return;
+        }
+
         ProductManager productManager = new ProductManager(new InMemoryProductDal(), new CategoryManager(new EfCategoryDal(context)));
 
-        foreach (var product in productManager.GetAllProducts().Data)
+        var productsInMemory = productManager.GetAllProducts().Data;
+
+        foreach (var product in productsInMemory)
         {
             Console.WriteLine(product.ProductName);
         }
+
+        cacheService?.Set<List<Product>>(cacheKey, productsInMemory);
     }
 
     private static void EfProductGetAllProductsTest()
