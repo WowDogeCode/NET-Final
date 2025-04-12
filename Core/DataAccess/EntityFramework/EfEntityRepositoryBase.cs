@@ -37,6 +37,11 @@ namespace Core.DataAccess.EntityFramework
             return filter == null ? _context.Set<TEntity>().ToList() : _context.Set<TEntity>().Where(filter).ToList();
         }
 
+        public TEntity GetAsNoTracking(Expression<Func<TEntity, bool>> filter)
+        {
+            return _context.Set<TEntity>().AsNoTracking().SingleOrDefault(filter);
+        }
+
         public void Update(TEntity entity)
         {
             var updatedEntity = _context.Entry(entity);

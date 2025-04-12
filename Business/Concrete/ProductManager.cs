@@ -72,7 +72,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult UpdateProduct(Product product)
         {
-            Product productToUpdate = _productDal.Get(x => x.ProductId == product.ProductId);
+            Product productToUpdate = _productDal.GetAsNoTracking(x => x.ProductId == product.ProductId);
 
             if (productToUpdate == null)
             {
