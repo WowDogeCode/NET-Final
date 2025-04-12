@@ -3,6 +3,7 @@ using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Caching;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -47,6 +48,11 @@ namespace Business.DependencyResolvers.Autofac
             // JWT
             builder.RegisterType<JwtHelper>()
                    .As<ITokenHelper>()
+                   .SingleInstance();
+
+            // Redis
+            builder.RegisterType<RedisCacheService>()
+                   .As<ICacheService>()
                    .SingleInstance();
 
             // Interceptors

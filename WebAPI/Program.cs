@@ -6,6 +6,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,19 @@ builder.Services.AddDbContext<NorthwindContext>(options =>
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule(new AutofacBusinessModule());
+});
+
+builder.Services.AddMemoryCache();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    string? redisConfig = builder.Configuration.GetConnectionString("Redis");
+
+    if (!string.IsNullOrEmpty(redisConfig))
+    {
+        options.ConfigurationOptions = ConfigurationOptions.Parse(redisConfig);
+    }
+
+    options.InstanceName = "NET-Final_";
 });
 
 TokenOptions tokenOptions = new TokenOptions();
